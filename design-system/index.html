@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Blue Peaks Design System — v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body,'Plus Jakarta Sans',sans-serif);background:var(--surface-base,#050D18);color:#e8eef5;line-height:1.6}
+.ds-nav{position:sticky;top:0;background:rgba(5,13,24,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-subtle);padding:0 2rem;height:60px;display:flex;align-items:center;gap:2rem;z-index:50}
+.ds-nav-brand{font-family:var(--font-display,'Syne',sans-serif);font-size:1rem;font-weight:700;color:#fff}
+.ds-nav a{font-size:.83rem;color:var(--text-muted,#7A92B4);text-decoration:none;transition:color .15s}
+.ds-nav a:hover{color:#fff}
+.ds-layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.ds-sidebar{position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:1.5rem 1rem;border-right:1px solid var(--border-subtle);background:var(--surface-card,#0B1527)}
+.ds-sidebar h3{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin:1.25rem 0 .5rem .5rem}
+.ds-sidebar a{display:block;padding:.4rem .75rem;border-radius:.5rem;font-size:.82rem;color:var(--text-muted);text-decoration:none;transition:all .15s}
+.ds-sidebar a:hover,.ds-sidebar a.active{background:rgba(34,201,230,.08);color:var(--cyan,#22C9E6)}
+.ds-content{padding:3rem 3.5rem;max-width:960px}
+.ds-section{margin-bottom:4rem;scroll-margin-top:80px}
+.ds-section-title{font-family:var(--font-display,'Syne',sans-serif);font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:.4rem}
+.ds-section-sub{font-size:.92rem;color:var(--text-muted);margin-bottom:2rem;max-width:55ch}
+.ds-divider{height:1px;background:var(--border-subtle);margin:2.5rem 0}
+/* Token grid */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
+.token-swatch{border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.token-color{height:56px}
+.token-info{padding:.6rem .75rem;background:rgba(255,255,255,.03)}
+.token-name{font-size:.72rem;font-weight:600;color:#fff;font-family:monospace}
+.token-value{font-size:.68rem;color:var(--text-muted);margin-top:.15rem;font-family:monospace}
+/* Typography specimen */
+.type-specimen{margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border-subtle)}
+.type-specimen:last-child{border-bottom:none}
+.type-meta{font-size:.72rem;color:var(--text-muted);margin-bottom:.4rem;font-family:monospace}
+/* Component demos */
+.demo-row{display:flex;align-items:center;flex-wrap:wrap;gap:1rem;padding:1.5rem;background:var(--surface-card);border-radius:var(--radius-lg,1rem);border:1px solid var(--border-subtle);margin-bottom:1rem}
+.demo-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem}
+/* Spacing ruler */
+.spacing-row{display:flex;align-items:center;gap:1rem;margin-bottom:.6rem}
+.spacing-block{background:rgba(34,201,230,.25);border-radius:3px;flex-shrink:0}
+.spacing-info{font-size:.78rem;color:var(--text-muted);font-family:monospace}
+/* Elevation */
+.elevation-row{display:flex;gap:1.5rem;flex-wrap:wrap}
+.elevation-card{width:100px;height:80px;border-radius:var(--radius-md,.75rem);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-size:.68rem;color:var(--text-muted)}
+/* Radius */
+.radius-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end}
+.radius-box{width:72px;height:72px;background:rgba(34,201,230,.15);border:1px solid rgba(34,201,230,.3);display:flex;align-items:center;justify-content:center;font-size:.62rem;color:var(--cyan);text-align:center}
+/* Motion */
+.motion-row{display:flex;gap:1rem;flex-wrap:wrap}
+.motion-card{padding:.75rem 1.25rem;background:var(--surface-raised,#112040);border-radius:.75rem;border:1px solid var(--border-subtle);cursor:pointer;font-size:.82rem;color:#fff}
+/* Buttons reused from main site */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.75rem;border-radius:9999px;font-weight:600;font-size:.95rem;font-family:inherit;cursor:pointer;border:none;transition:all .2s cubic-bezier(.16,1,.3,1)}
+.btn-primary{background:#22C9E6;color:#050D18;box-shadow:0 0 24px rgba(34,201,230,.3)}
+.btn-primary:hover{background:#3dd4eb;transform:translateY(-1px)}
+.btn-ghost{border:1.5px solid rgba(34,201,230,.4);color:#22C9E6;background:transparent}
+.btn-ghost:hover{background:rgba(34,201,230,.08)}
+.btn-sm{padding:.45rem 1.1rem;font-size:.82rem}
+.btn-lg{padding:1rem 2.25rem;font-size:1.05rem}
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .9rem;border-radius:9999px;font-size:.75rem;font-weight:600;letter-spacing:.05em}
+/* Input */
+.input-demo{background:#050D18;border:1px solid rgba(34,201,230,.18);border-radius:.6rem;padding:.75rem 1rem;font-size:.92rem;color:#fff;font-family:inherit;outline:none;width:260px;transition:border-color .15s,box-shadow .15s}
+.input-demo:focus{border-color:rgba(34,201,230,.5);box-shadow:0 0 0 3px rgba(34,201,230,.1)}
+/* Code block */
+pre{background:rgba(11,21,39,.8);border:1px solid var(--border-subtle);border-radius:.75rem;padding:1.25rem 1.5rem;font-size:.82rem;color:#c8d8ea;overflow-x:auto;margin-top:.75rem;font-family:'JetBrains Mono','Fira Code',monospace;line-height:1.6}
+code{font-family:monospace;font-size:.85em;color:#22C9E6;background:rgba(34,201,230,.1);padding:.1em .3em;border-radius:.25em}
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <span class="ds-nav-brand">Blue Peaks Design System</span>
+  <a href="#colors">Colors</a>
+  <a href="#typography">Typography</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#components">Components</a>
+  <a href="#motion">Motion</a>
+  <a href="#usage">Usage</a>
+  <span style="margin-left:auto;font-size:.75rem;color:var(--text-muted)">v1.0.0 · bluepeaks.io</span>
+</nav>
+
+<div class="ds-layout">
+  <aside class="ds-sidebar">
+    <h3>Foundation</h3>
+    <a href="#colors">Color Tokens</a>
+    <a href="#typography">Typography</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#elevation">Elevation &amp; Shadow</a>
+    <a href="#radius">Border Radius</a>
+    <h3>Components</h3>
+    <a href="#buttons">Buttons</a>
+    <a href="#badges">Badges</a>
+    <a href="#inputs">Inputs</a>
+    <a href="#cards">Cards</a>
+    <h3>Patterns</h3>
+    <a href="#motion">Motion</a>
+    <a href="#usage">Usage Guide</a>
+  </aside>
+
+  <main class="ds-content">
+
+    <!-- HEADER -->
+    <div style="margin-bottom:3rem">
+      <p style="font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#22C9E6;margin-bottom:.5rem">Blue Peaks Innovations Inc.</p>
+      <h1 style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:#fff;line-height:1.1;margin-bottom:.75rem">Design System</h1>
+      <p style="color:#7A92B4;max-width:52ch;font-size:1.05rem">The single source of truth for visual design across all Blue Peaks products: VIA Connect, AI Studio, AI Governance, and future surfaces.</p>
+    </div>
+
+    <!-- COLORS -->
+    <section class="ds-section" id="colors">
+      <div class="ds-section-title">Color Tokens</div>
+      <p class="ds-section-sub">All colors expressed in OKLCH for perceptual uniformity. Hex aliases provided for brand reference. Import <code>tokens.css</code> to use.</p>
+
+      <div class="demo-label">Surfaces</div>
+      <div class="token-grid" style="margin-bottom:1.5rem">
+        <div class="token-swatch"><div class="token-color" style="background:#050D18"></div><div class="token-info"><div class="token-name">--surface-base</div><div class="token-value">#050D18</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#0B1527"></div><div class="token-info"><div class="token-name">--surface-card</div><div class="token-value">#0B1527</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#112040"></div><div class="token-info"><div class="token-name">--surface-raised</div><div class="token-value">#112040</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:rgba(255,255,255,.97)"></div><div class="token-info"><div class="token-name">--surface-invert</div><div class="token-value">oklch(97% …)</div></div></div>
+      </div>
+
+      <div class="demo-label">Brand &amp; Accents</div>
+      <div class="token-grid" style="margin-bottom:1.5rem">
+        <div class="token-swatch"><div class="token-color" style="background:#1B4FD8"></div><div class="token-info"><div class="token-name">--blue-brand</div><div class="token-value">#1B4FD8</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#2563EB"></div><div class="token-info"><div class="token-name">--blue-light</div><div class="token-value">#2563EB</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#22C9E6"></div><div class="token-info"><div class="token-name">--cyan</div><div class="token-value">#22C9E6 · primary accent</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#14B8A6"></div><div class="token-info"><div class="token-name">--teal</div><div class="token-value">#14B8A6 · secondary</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#8364E8"></div><div class="token-info"><div class="token-name">--purple</div><div class="token-value">#8364E8 · AI / special</div></div></div>
+      </div>
+
+      <div class="demo-label">Semantic</div>
+      <div class="token-grid" style="margin-bottom:1.5rem">
+        <div class="token-swatch"><div class="token-color" style="background:#1FAE6B"></div><div class="token-info"><div class="token-name">--green</div><div class="token-value">#1FAE6B · success / built</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#E6A52B"></div><div class="token-info"><div class="token-name">--amber</div><div class="token-value">#E6A52B · warning / sprint</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#E5484D"></div><div class="token-info"><div class="token-name">--coral</div><div class="token-value">#E5484D · error / pain</div></div></div>
+      </div>
+
+      <div class="demo-label">Text</div>
+      <div class="token-grid">
+        <div class="token-swatch"><div class="token-color" style="background:#f5f8fc"></div><div class="token-info"><div class="token-name">--text-primary</div><div class="token-value">oklch(97% …)</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#e0eaf5"></div><div class="token-info"><div class="token-name">--text-body</div><div class="token-value">oklch(88% …)</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#7A92B4"></div><div class="token-info"><div class="token-name">--text-muted</div><div class="token-value">#7A92B4</div></div></div>
+        <div class="token-swatch"><div class="token-color" style="background:#4a637e"></div><div class="token-info"><div class="token-name">--text-disabled</div><div class="token-value">oklch(45% …)</div></div></div>
+      </div>
+
+      <pre>/* Import in any Blue Peaks product */
+@import url('./design-system/tokens.css');
+
+/* Use tokens */
+.my-element {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}</pre>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- TYPOGRAPHY -->
+    <section class="ds-section" id="typography">
+      <div class="ds-section-title">Typography</div>
+      <p class="ds-section-sub">Syne for display and headings. Plus Jakarta Sans for body and UI. Asian languages fall back to Noto Sans SC/JP/Thai.</p>
+
+      <div class="type-specimen">
+        <div class="type-meta">--font-display · Syne 800 · --text-6xl · tracking-tight</div>
+        <div style="font-family:'Syne',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-.03em">Blue Peaks<br>Innovations</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Syne 700 · --text-4xl · display heading</div>
+        <div style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.02em">Software that scales.</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Syne 700 · --text-3xl · section heading</div>
+        <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;color:#fff;line-height:1.15">One platform. Everything connected.</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Syne 700 · --text-2xl · card heading</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:#fff">VIA Connect</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Plus Jakarta Sans 400 · --text-lg · body large</div>
+        <div style="font-size:1.125rem;color:#c0cfe0;line-height:1.7;max-width:55ch">Blue Peaks Innovations builds SaaS platforms, AI agent ecosystems, and governance consulting for companies that need to move faster than the competition.</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Plus Jakarta Sans 400 · --text-base · body</div>
+        <div style="font-size:1rem;color:#b0c4d8;line-height:1.65;max-width:55ch">VIA Connect manages the complete international student lifecycle — from first contact to arrival and beyond. Built specifically for agencies.</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Plus Jakarta Sans 500 · --text-sm · label / UI</div>
+        <div style="font-size:.875rem;font-weight:500;color:#7A92B4;letter-spacing:.04em">Active students · 247 enrolled · 3 arriving today</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-meta">Plus Jakarta Sans 700 · --text-xs · uppercase label</div>
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#22C9E6">VIA Connect · Section Label</div>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- SPACING -->
+    <section class="ds-section" id="spacing">
+      <div class="ds-section-title">Spacing</div>
+      <p class="ds-section-sub">Base-4 scale using rem units. Use <code>--space-N</code> tokens — never hardcode pixel values.</p>
+      <div style="margin-top:1rem">
+        <div class="spacing-row"><div class="spacing-block" style="width:4px;height:16px"></div><div class="spacing-info">--space-1 · 0.25rem · 4px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:8px;height:16px"></div><div class="spacing-info">--space-2 · 0.5rem · 8px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:12px;height:16px"></div><div class="spacing-info">--space-3 · 0.75rem · 12px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:16px;height:16px"></div><div class="spacing-info">--space-4 · 1rem · 16px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:24px;height:16px"></div><div class="spacing-info">--space-6 · 1.5rem · 24px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:32px;height:16px"></div><div class="spacing-info">--space-8 · 2rem · 32px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:48px;height:16px"></div><div class="spacing-info">--space-12 · 3rem · 48px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:64px;height:16px"></div><div class="spacing-info">--space-16 · 4rem · 64px</div></div>
+        <div class="spacing-row"><div class="spacing-block" style="width:96px;height:16px"></div><div class="spacing-info">--space-24 · 6rem · 96px · section padding</div></div>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- ELEVATION -->
+    <section class="ds-section" id="elevation">
+      <div class="ds-section-title">Elevation &amp; Shadows</div>
+      <p class="ds-section-sub">Shadows are blue-tinted to blend with the dark palette. Glow variants use brand accent colors.</p>
+      <div class="elevation-row" style="margin-bottom:1.5rem">
+        <div class="elevation-card" style="box-shadow:0 2px 8px rgba(0,0,0,.3)">sm</div>
+        <div class="elevation-card" style="box-shadow:0 8px 24px rgba(0,0,0,.4)">md</div>
+        <div class="elevation-card" style="box-shadow:0 16px 48px rgba(0,0,0,.5)">lg</div>
+        <div class="elevation-card" style="box-shadow:0 24px 64px rgba(0,0,0,.6)">xl</div>
+      </div>
+      <div class="demo-label">Glow variants (brand accent)</div>
+      <div class="elevation-row">
+        <div class="elevation-card" style="box-shadow:0 0 40px rgba(34,201,230,.2),0 0 80px rgba(34,201,230,.08)">cyan</div>
+        <div class="elevation-card" style="box-shadow:0 0 40px rgba(131,100,232,.2),0 0 80px rgba(131,100,232,.08)">purple</div>
+        <div class="elevation-card" style="box-shadow:0 0 40px rgba(20,184,166,.2),0 0 80px rgba(20,184,166,.08)">teal</div>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- RADIUS -->
+    <section class="ds-section" id="radius">
+      <div class="ds-section-title">Border Radius</div>
+      <div class="radius-row" style="margin-top:1rem">
+        <div class="radius-box" style="border-radius:.25rem">xs<br>.25rem</div>
+        <div class="radius-box" style="border-radius:.5rem">sm<br>.5rem</div>
+        <div class="radius-box" style="border-radius:.75rem">md<br>.75rem</div>
+        <div class="radius-box" style="border-radius:1rem">lg<br>1rem</div>
+        <div class="radius-box" style="border-radius:1.5rem">xl<br>1.5rem</div>
+        <div class="radius-box" style="border-radius:2rem">2xl<br>2rem</div>
+        <div class="radius-box" style="border-radius:9999px;width:80px;height:40px">full</div>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- COMPONENTS: BUTTONS -->
+    <section class="ds-section" id="buttons">
+      <div class="ds-section-title">Buttons</div>
+      <p class="ds-section-sub">Three variants: Primary (filled cyan), Ghost (outlined), Teal (filled teal). Three sizes: sm, md (default), lg.</p>
+      <div class="demo-row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn" style="background:#14B8A6;color:#050D18">Teal</button>
+        <button class="btn btn-primary" disabled style="opacity:.4;cursor:not-allowed">Disabled</button>
+      </div>
+      <div class="demo-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Default</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+      <pre>&lt;button class="btn btn-primary"&gt;Request Demo&lt;/button&gt;
+&lt;button class="btn btn-ghost"&gt;See all services&lt;/button&gt;</pre>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- BADGES -->
+    <section class="ds-section" id="badges">
+      <div class="ds-section-title">Badges</div>
+      <div class="demo-row">
+        <span class="badge" style="background:rgba(34,201,230,.1);border:1px solid rgba(34,201,230,.3);color:#22C9E6">⭐ Featured Product</span>
+        <span class="badge" style="background:rgba(131,100,232,.12);border:1px solid rgba(131,100,232,.3);color:#8364E8">Custom AI Projects</span>
+        <span class="badge" style="background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.3);color:#14B8A6">EU AI Act Ready</span>
+        <span class="badge" style="background:rgba(230,165,43,.15);border:1px solid rgba(230,165,43,.35);color:#E6A52B">30-Day Sprint</span>
+        <span class="badge" style="background:rgba(31,174,107,.12);border:1px solid rgba(31,174,107,.3);color:#1FAE6B;font-size:.65rem">BUILT</span>
+        <span class="badge" style="background:#1FAE6B;color:#050D18">✓ SOC 2 TYPE II</span>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- INPUTS -->
+    <section class="ds-section" id="inputs">
+      <div class="ds-section-title">Form Inputs</div>
+      <div class="demo-row" style="flex-direction:column;align-items:flex-start;gap:1rem">
+        <div>
+          <div class="demo-label">Default</div>
+          <input class="input-demo" type="text" placeholder="Agency name">
+        </div>
+        <div>
+          <div class="demo-label">Focus (click to see)</div>
+          <input class="input-demo" type="email" placeholder="you@agency.com" style="border-color:rgba(34,201,230,.5);box-shadow:0 0 0 3px rgba(34,201,230,.1)">
+        </div>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- CARDS -->
+    <section class="ds-section" id="cards">
+      <div class="ds-section-title">Card Variants</div>
+      <p class="ds-section-sub">Cards are not a default layout device — use them only when the content benefits from clear containment. Never nest cards.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem">
+        <div style="padding:1.5rem;border-radius:1.5rem;background:#0B1527;border:1px solid rgba(34,201,230,.3);box-shadow:0 0 40px rgba(34,201,230,.12)">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;margin-bottom:.5rem">Cyan (VIA)</div>
+          <p style="font-size:.85rem;color:#7A92B4">Primary product card border treatment.</p>
+        </div>
+        <div style="padding:1.5rem;border-radius:1.5rem;background:#0B1527;border:1px solid rgba(131,100,232,.3);box-shadow:0 0 40px rgba(131,100,232,.12)">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;margin-bottom:.5rem">Purple (AI Studio)</div>
+          <p style="font-size:.85rem;color:#7A92B4">AI and intelligence product cards.</p>
+        </div>
+        <div style="padding:1.5rem;border-radius:1.5rem;background:#0B1527;border:1px solid rgba(20,184,166,.3);box-shadow:0 0 40px rgba(20,184,166,.12)">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;margin-bottom:.5rem">Teal (Governance)</div>
+          <p style="font-size:.85rem;color:#7A92B4">Compliance and advisory cards.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- MOTION -->
+    <section class="ds-section" id="motion">
+      <div class="ds-section-title">Motion Tokens</div>
+      <p class="ds-section-sub">Use <code>--ease-out-expo</code> for entrances. Never use bounce or elastic. Never animate layout properties (width, height, top).</p>
+      <table style="width:100%;border-collapse:collapse;font-size:.85rem;margin-top:1rem">
+        <thead><tr style="border-bottom:1px solid var(--border-subtle)">
+          <th style="text-align:left;padding:.5rem;color:#7A92B4;font-weight:600">Token</th>
+          <th style="text-align:left;padding:.5rem;color:#7A92B4;font-weight:600">Value</th>
+          <th style="text-align:left;padding:.5rem;color:#7A92B4;font-weight:600">Use</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border-subtle)"><td style="padding:.6rem .5rem;color:#c0cfe0">--duration-fast</td><td style="padding:.6rem .5rem;color:#22C9E6;font-family:monospace">150ms</td><td style="padding:.6rem .5rem;color:#7A92B4">Hover states, toggles</td></tr>
+          <tr style="border-bottom:1px solid var(--border-subtle)"><td style="padding:.6rem .5rem;color:#c0cfe0">--duration-base</td><td style="padding:.6rem .5rem;color:#22C9E6;font-family:monospace">250ms</td><td style="padding:.6rem .5rem;color:#7A92B4">Most transitions</td></tr>
+          <tr style="border-bottom:1px solid var(--border-subtle)"><td style="padding:.6rem .5rem;color:#c0cfe0">--duration-slow</td><td style="padding:.6rem .5rem;color:#22C9E6;font-family:monospace">400ms</td><td style="padding:.6rem .5rem;color:#7A92B4">Panels, modals, reveals</td></tr>
+          <tr style="border-bottom:1px solid var(--border-subtle)"><td style="padding:.6rem .5rem;color:#c0cfe0">--ease-out-expo</td><td style="padding:.6rem .5rem;color:#22C9E6;font-family:monospace">cubic-bezier(.16,1,.3,1)</td><td style="padding:.6rem .5rem;color:#7A92B4">All entrances</td></tr>
+          <tr><td style="padding:.6rem .5rem;color:#c0cfe0">--ease-out-quart</td><td style="padding:.6rem .5rem;color:#22C9E6;font-family:monospace">cubic-bezier(.25,1,.5,1)</td><td style="padding:.6rem .5rem;color:#7A92B4">Exits, scroll reveals</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="ds-divider"></div>
+
+    <!-- USAGE GUIDE -->
+    <section class="ds-section" id="usage">
+      <div class="ds-section-title">Usage Guide</div>
+      <p class="ds-section-sub">How to apply this design system to any Blue Peaks product.</p>
+
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <div style="padding:1.5rem;background:#0B1527;border-radius:1rem;border-left:3px solid #22C9E6">
+          <div style="font-weight:600;color:#fff;margin-bottom:.5rem">1. Import tokens.css first</div>
+          <p style="font-size:.88rem;color:#7A92B4">Always <code>@import</code> the design system tokens before any product-specific styles.</p>
+        </div>
+        <div style="padding:1.5rem;background:#0B1527;border-radius:1rem;border-left:3px solid #8364E8">
+          <div style="font-weight:600;color:#fff;margin-bottom:.5rem">2. Use CSS custom properties, never hardcode</div>
+          <p style="font-size:.88rem;color:#7A92B4">Always <code>var(--cyan)</code>, never <code>#22C9E6</code>. This ensures future rebranding affects all products simultaneously.</p>
+        </div>
+        <div style="padding:1.5rem;background:#0B1527;border-radius:1rem;border-left:3px solid #14B8A6">
+          <div style="font-weight:600;color:#fff;margin-bottom:.5rem">3. Dark theme only</div>
+          <p style="font-size:.88rem;color:#7A92B4">Blue Peaks products are dark-first. Do not implement light mode unless a specific product requires it (e.g., a document export). The scene: executives, advisors, and engineers using professional tools in focused environments.</p>
+        </div>
+        <div style="padding:1.5rem;background:#0B1527;border-radius:1rem;border-left:3px solid #E6A52B">
+          <div style="font-weight:600;color:#fff;margin-bottom:.5rem">4. Accent assignment by product</div>
+          <p style="font-size:.88rem;color:#7A92B4"><strong style="color:#22C9E6">Cyan</strong> = VIA Connect (primary). <strong style="color:#8364E8">Purple</strong> = AI Studio. <strong style="color:#14B8A6">Teal</strong> = AI Governance. Stick to product-to-accent mapping for consistency.</p>
+        </div>
+        <div style="padding:1.5rem;background:#0B1527;border-radius:1rem;border-left:3px solid #E5484D">
+          <div style="font-weight:600;color:#fff;margin-bottom:.5rem">5. Typography rules</div>
+          <p style="font-size:.88rem;color:#7A92B4">Syne for display/headings only. Plus Jakarta Sans for all body text. Minimum 16px body text. Max line length 65–75ch. Use the scale — never interpolate between steps.</p>
+        </div>
+      </div>
+
+      <pre style="margin-top:2rem">/* Minimal Blue Peaks product setup */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+@import './design-system/tokens.css';
+
+html { font-family: var(--font-body); background: var(--surface-base); color: var(--text-body); }
+h1,h2,h3 { font-family: var(--font-display); color: var(--text-primary); }
+a { color: var(--cyan); }</pre>
+    </section>
+
+    <div style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border-subtle);font-size:.78rem;color:#7A92B4">
+      Blue Peaks Innovations Inc. · Design System v1.0.0 · © 2026 · bluepeaks.io
+    </div>
+
+  </main>
+</div>
+</body>
+</html>
