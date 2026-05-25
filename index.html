@@ -24,14 +24,14 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
   --txt:#0F172A;--txt-body:#334155;--txt-muted:#64748B;--txt-faint:#94A3B8;
   --border:#E2E8F0;--border-strong:#CBD5E1;
   --bg:#FFFFFF;--bg-soft:#F8FAFC;--bg-blue:rgba(27,79,216,.05);
-  --dark:#0D1B38;--dark-card:rgba(15,28,60,.7);
+  --dark:#0D1B38;
   --fd:'Syne',sans-serif;--fb:'Plus Jakarta Sans',sans-serif;
   --ease:cubic-bezier(.16,1,.3,1);
   --nav-h:68px;
   --sh:0 1px 3px rgba(15,23,42,.08),0 1px 2px rgba(15,23,42,.05);
   --sh-md:0 4px 16px rgba(15,23,42,.08),0 2px 6px rgba(15,23,42,.04);
   --sh-lg:0 12px 36px rgba(15,23,42,.1),0 4px 10px rgba(15,23,42,.04);
-  --sh-xl:0 20px 60px rgba(15,23,42,.12);
+  --sh-xl:0 20px 60px rgba(15,23,42,.14);
 }
 [data-lang="zh"]{--fd:'Noto Sans SC',sans-serif;--fb:'Noto Sans SC',sans-serif}
 [data-lang="ja"]{--fd:'Noto Sans JP',sans-serif;--fb:'Noto Sans JP',sans-serif}
@@ -41,10 +41,8 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .section{padding:clamp(5rem,7vw,8rem) 0}
 .section-lbl{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;display:block;margin-bottom:.75rem;color:var(--blue)}
 .lbl-teal{color:var(--teal)}.lbl-muted{color:var(--txt-muted)}
-.h1{font-family:var(--fd);font-size:clamp(3rem,5.5vw,5.2rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;color:var(--txt)}
 .h2{font-family:var(--fd);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;line-height:1.14;letter-spacing:-.025em;color:var(--txt)}
-.h3{font-family:var(--fd);font-size:clamp(1.1rem,1.8vw,1.4rem);font-weight:700;line-height:1.25;color:var(--txt)}
-.animate-in{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.animate-in{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
 .animate-in.visible{opacity:1;transform:none}
 .tag{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;border-radius:99px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
 .tag-blue{background:var(--bg-blue);border:1px solid rgba(27,79,216,.15);color:var(--blue)}
@@ -60,38 +58,178 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .btn-teal{background:var(--teal);color:#fff}
 .btn-teal:hover{background:#0F9D8B;transform:translateY(-1px)}
 
-/* NAV — always white */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center}
+/* ── NAV — transparent on hero, white on scroll ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+  background:transparent;border-bottom:1px solid transparent;
+  display:flex;align-items:center;
+  transition:background .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)
+}
+.nav.scrolled{background:#fff;border-bottom-color:var(--border);box-shadow:0 2px 16px rgba(15,23,42,.06)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem);width:100%;display:flex;align-items:center;gap:2.5rem}
-.nav-logo img{height:34px;width:auto}
+.nav-logo img{height:34px;width:auto;filter:brightness(10);transition:filter .35s}
+.nav.scrolled .nav-logo img{filter:none}
 .nav-links{display:flex;align-items:center;gap:2rem;margin-left:auto}
-.nav-links a{font-size:.85rem;font-weight:500;color:var(--txt-muted);transition:color .14s}
-.nav-links a:hover{color:var(--txt)}
+.nav-links a{font-size:.85rem;font-weight:500;color:rgba(255,255,255,.82);transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav.scrolled .nav-links a{color:var(--txt-muted)}
+.nav.scrolled .nav-links a:hover{color:var(--txt)}
 .nav-right{display:flex;align-items:center;gap:.65rem;margin-left:1.5rem}
+
+/* Language selector */
 .lang-selector{position:relative}
-.lang-btn{display:flex;align-items:center;gap:.3rem;padding:.34rem .65rem;border-radius:99px;background:var(--bg-soft);border:1px solid var(--border);font-size:.77rem;font-weight:500;color:var(--txt-body);cursor:pointer;transition:all .14s}
-.lang-btn:hover{background:var(--border);color:var(--txt)}
+.lang-btn{
+  display:flex;align-items:center;gap:.3rem;padding:.34rem .65rem;
+  border-radius:99px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  font-size:.77rem;font-weight:500;color:#fff;cursor:pointer;transition:all .2s
+}
+.lang-btn:hover{background:rgba(255,255,255,.22)}
+.nav.scrolled .lang-btn{background:var(--bg-soft);border-color:var(--border);color:var(--txt-body)}
+.nav.scrolled .lang-btn:hover{background:var(--border);color:var(--txt)}
 .lang-dropdown{position:absolute;top:calc(100% + .45rem);right:0;background:#fff;border:1px solid var(--border);border-radius:12px;padding:.35rem;min-width:136px;display:none;box-shadow:var(--sh-lg)}
 .lang-dropdown.open{display:block}
 .lang-option{display:flex;align-items:center;gap:.42rem;padding:.44rem .72rem;border-radius:.5rem;font-size:.82rem;cursor:pointer;transition:background .1s;white-space:nowrap;color:var(--txt-body)}
 .lang-option:hover,.lang-option.active{background:var(--bg-blue);color:var(--blue)}
+
+/* Nav CTA */
+.nav-cta-hero{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.54rem 1.2rem;
+  border-radius:99px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.32);
+  color:#fff;font-weight:600;font-size:.84rem;transition:all .2s
+}
+.nav-cta-hero:hover{background:rgba(255,255,255,.28)}
+.nav.scrolled .nav-cta-hero{background:var(--blue);border-color:var(--blue);color:#fff}
+.nav.scrolled .nav-cta-hero:hover{background:var(--blue-lt)}
+
 .nav-hamburger{display:none;flex-direction:column;gap:5px;padding:.5rem;cursor:pointer}
-.nav-hamburger span{display:block;width:22px;height:2px;background:var(--txt);border-radius:2px;transition:all .25s}
+.nav-hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+.nav.scrolled .nav-hamburger span{background:var(--txt)}
 .nav-mobile{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:#fff;border-bottom:1px solid var(--border);padding:1.25rem;flex-direction:column;gap:.65rem;z-index:99;box-shadow:var(--sh-md)}
 .nav-mobile.open{display:flex}
 .nav-mobile a{padding:.58rem 0;border-bottom:1px solid var(--border);font-size:.93rem;color:var(--txt-body)}
 @media(max-width:900px){.nav-links{display:none}.nav-hamburger{display:flex}}
 
-/* HERO */
-.hero{padding-top:var(--nav-h);background:#fff;min-height:calc(100vh - var(--nav-h));display:flex;align-items:center;border-bottom:1px solid var(--border)}
-.hero-inner{display:grid;grid-template-columns:52fr 48fr;gap:4rem;align-items:center;padding:5rem 0 5.5rem}
-.hero-lbl{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;display:block}
-.hero-h1{color:var(--txt);margin-bottom:1.5rem}
-.hero-h1 em{font-style:italic;font-family:'Georgia',serif;color:var(--txt-muted);font-size:.88em}
-.hero-sub{font-size:1.05rem;color:var(--txt-muted);line-height:1.72;max-width:50ch;margin-bottom:2rem}
+/* ── HERO — full-bleed photo ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:flex-end;
+  padding-bottom:clamp(5rem,8vw,8rem);
+  overflow:hidden;
+}
+.hero-photo{position:absolute;inset:0;z-index:0}
+.hero-photo img{
+  width:100%;height:100%;object-fit:cover;
+  object-position:center 28%;display:block;
+}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to right, rgba(5,13,35,.78) 0%, rgba(5,13,35,.38) 100%),
+    linear-gradient(to top, rgba(5,13,35,.65) 0%, rgba(5,13,35,0) 55%);
+}
+.hero-content{position:relative;z-index:2;max-width:640px}
+.hero-eyebrow{
+  display:block;font-size:.7rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:1.2rem
+}
+.hero-h1{
+  font-family:var(--fd);font-size:clamp(3rem,5.5vw,5.2rem);font-weight:800;
+  line-height:1.06;letter-spacing:-.03em;color:#fff;margin-bottom:1.4rem
+}
+.hero-sub{
+  font-size:clamp(.95rem,1.4vw,1.06rem);color:rgba(255,255,255,.7);
+  line-height:1.68;max-width:50ch;margin-bottom:2.2rem
+}
 .hero-ctas{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn-hero-p{
+  display:inline-flex;align-items:center;gap:.38rem;padding:.72rem 1.65rem;
+  border-radius:99px;background:#fff;color:#0D1B38;font-weight:700;font-size:.88rem;
+  transition:all .2s var(--ease)
+}
+.btn-hero-p:hover{background:rgba(255,255,255,.9);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.btn-hero-g{
+  display:inline-flex;align-items:center;gap:.38rem;padding:.72rem 1.65rem;
+  border-radius:99px;border:1.5px solid rgba(255,255,255,.32);color:rgba(255,255,255,.88);
+  font-weight:600;font-size:.88rem;transition:all .2s var(--ease)
+}
+.btn-hero-g:hover{border-color:rgba(255,255,255,.62);background:rgba(255,255,255,.08)}
+.hero-scroll{
+  position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:rgba(255,255,255,.38);font-size:.67rem;letter-spacing:.12em;text-transform:uppercase
+}
+.hero-scroll::after{
+  content:'';width:1px;height:36px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);
+  animation:scrollPulse 2s ease-in-out infinite
+}
+@keyframes scrollPulse{0%,100%{opacity:.4;transform:scaleY(.8)}50%{opacity:1;transform:scaleY(1)}}
+@media(max-width:768px){.hero{padding-bottom:5rem}}
 
-/* Chat UI — hero visual */
+/* ── TRUST BAR ── */
+.trust-bar{border-bottom:1px solid var(--border);padding:.85rem 0;background:#fff}
+.trust-inner{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.8rem}
+.trust-txt{font-size:.78rem;color:var(--txt-muted);font-weight:500;white-space:nowrap}
+.trust-flags{display:flex;gap:.42rem;flex-wrap:wrap;align-items:center}
+.trust-flag{display:flex;align-items:center;gap:.26rem;padding:.24rem .65rem;border-radius:99px;background:var(--bg-soft);border:1px solid var(--border);font-size:.75rem;font-weight:500;color:var(--txt-body)}
+
+/* ── SERVICES — editorial layout, not 3 equal cards ── */
+.svc-section{background:#fff}
+.svc-head{margin-bottom:3.5rem}
+.svc-head span{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.65rem}
+.svc-head p{color:var(--txt-muted);margin-top:.75rem;font-size:.97rem;max-width:52ch}
+
+/* VIA Connect — featured */
+.svc-featured{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border-radius:20px;overflow:hidden;border:1.5px solid var(--border);
+  margin-bottom:1.25rem;
+}
+.svc-feat-img{position:relative;min-height:360px;overflow:hidden}
+.svc-feat-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 6s ease-out}
+.svc-featured:hover .svc-feat-img img{transform:scale(1.04)}
+.svc-feat-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(27,79,216,.55) 0%,rgba(5,13,35,.3) 100%)}
+.svc-feat-body{padding:2.75rem;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.svc-feat-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;border-radius:99px;font-size:.68rem;font-weight:700;background:var(--bg-blue);border:1px solid rgba(27,79,216,.15);color:var(--blue);width:fit-content}
+.svc-feat-title{font-family:var(--fd);font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:800;line-height:1.14;letter-spacing:-.025em;color:var(--txt)}
+.svc-feat-desc{font-size:.92rem;color:var(--txt-muted);line-height:1.68;max-width:44ch}
+.svc-feat-list{display:flex;flex-direction:column;gap:.4rem}
+.svc-feat-list li{font-size:.82rem;color:var(--txt-body);padding-left:1rem;position:relative}
+.svc-feat-list li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:.72rem;top:.06rem}
+
+/* AI pair */
+.svc-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.svc-card{
+  border-radius:16px;padding:2rem;border:1.5px solid var(--border);background:#fff;
+  display:flex;flex-direction:column;gap:.75rem;
+  transition:border-color .2s,box-shadow .2s var(--ease),transform .2s var(--ease)
+}
+.svc-card:hover{border-color:var(--border-strong);box-shadow:var(--sh-md);transform:translateY(-3px)}
+.svc-card.stu-c:hover{border-color:rgba(131,100,232,.28);box-shadow:0 8px 28px rgba(131,100,232,.07)}
+.svc-card.gov-c:hover{border-color:rgba(13,148,136,.28);box-shadow:0 8px 28px rgba(13,148,136,.07)}
+.svc-ico{width:44px;height:44px;border-radius:.72rem;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.ic-stu{background:#F5F3FF}.ic-gov{background:#F0FDFA}
+.svc-title{font-family:var(--fd);font-size:1.18rem;font-weight:700;color:var(--txt)}
+.svc-desc{font-size:.86rem;color:var(--txt-muted);line-height:1.65;flex:1}
+.svc-lnk{font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.28rem;transition:gap .14s}
+.svc-lnk:hover{gap:.5rem}
+.stu-c .svc-lnk{color:#7C3AED}.gov-c .svc-lnk{color:var(--teal)}
+@media(max-width:900px){.svc-featured{grid-template-columns:1fr}.svc-feat-img{min-height:220px}.svc-pair{grid-template-columns:1fr}}
+
+/* ── VIA CONNECT ── */
+.via-section{background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.via-lede{max-width:62ch;margin-bottom:3.5rem}
+.via-lede .h2{margin-bottom:.9rem}
+.via-lede p{font-size:1rem;color:var(--txt-muted);line-height:1.72}
+.via-grid{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start}
+.via-left p{font-size:.95rem;color:var(--txt-muted);line-height:1.72;margin-bottom:2rem}
+.prob-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--coral);display:block;margin-bottom:.88rem}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:.72rem;margin-bottom:2rem}
+.prob-card{padding:1.35rem;border-radius:12px;background:#fff;border:1.5px solid #FEE2E2}
+.prob-num{font-family:var(--fd);font-size:2.3rem;font-weight:800;color:var(--coral);line-height:1;margin-bottom:.28rem}
+.prob-desc{font-size:.8rem;color:var(--txt-muted);line-height:1.48}
+.via-solution-p{font-size:.92rem;color:var(--txt-body);line-height:1.72;border-left:3px solid var(--blue);padding-left:1rem}
+
+/* Chat UI */
 .hero-chat{background:#fff;border:1.5px solid var(--border);border-radius:20px;box-shadow:var(--sh-xl);overflow:hidden}
 .ch-topbar{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.15rem;background:var(--bg-soft);border-bottom:1px solid var(--border)}
 .ch-tb-left{display:flex;align-items:center;gap:.55rem}
@@ -118,56 +256,8 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .cf-ico{width:32px;height:32px;background:#D1FAE5;border-radius:.45rem;display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0}
 .cf-name{font-size:.74rem;font-weight:600;color:var(--txt)}
 .cf-meta{font-size:.62rem;color:var(--green);margin-top:.06rem}
-@media(max-width:900px){.hero-inner{grid-template-columns:1fr;padding:3.5rem 0 4rem}.hero-chat{display:none}}
 
-/* TRUST BAR */
-.trust-bar{border-bottom:1px solid var(--border);padding:.8rem 0;background:#fff}
-.trust-inner{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.8rem}
-.trust-txt{font-size:.78rem;color:var(--txt-muted);font-weight:500;white-space:nowrap}
-.trust-flags{display:flex;gap:.42rem;flex-wrap:wrap;align-items:center}
-.trust-flag{display:flex;align-items:center;gap:.26rem;padding:.24rem .65rem;border-radius:99px;background:var(--bg-soft);border:1px solid var(--border);font-size:.75rem;font-weight:500;color:var(--txt-body)}
-
-/* SERVICES */
-.svc-section{background:#fff}
-.svc-head{max-width:52ch;margin-bottom:3rem}
-.svc-head p{color:var(--txt-muted);margin-top:.75rem;font-size:.97rem}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem}
-.svc-card{border-radius:16px;padding:2rem;border:1.5px solid var(--border);background:#fff;display:flex;flex-direction:column;gap:.8rem;transition:border-color .2s,box-shadow .2s var(--ease),transform .2s var(--ease)}
-.svc-card:hover{border-color:var(--border-strong);box-shadow:var(--sh-md);transform:translateY(-3px)}
-.svc-card.via-c:hover{border-color:rgba(27,79,216,.3);box-shadow:0 8px 28px rgba(27,79,216,.08)}
-.svc-card.stu-c:hover{border-color:rgba(131,100,232,.28);box-shadow:0 8px 28px rgba(131,100,232,.07)}
-.svc-card.gov-c:hover{border-color:rgba(13,148,136,.28);box-shadow:0 8px 28px rgba(13,148,136,.07)}
-.svc-ico{width:44px;height:44px;border-radius:.72rem;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.15rem}
-.ic-via{background:#EFF6FF}.ic-stu{background:#F5F3FF}.ic-gov{background:#F0FDFA}
-.svc-title{font-family:var(--fd);font-size:1.12rem;font-weight:700;color:var(--txt)}
-.svc-desc{font-size:.86rem;color:var(--txt-muted);line-height:1.65;flex:1}
-.svc-ul{display:flex;flex-direction:column;gap:.36rem}
-.svc-ul li{font-size:.79rem;color:var(--txt-muted);padding-left:.9rem;position:relative}
-.svc-ul li::before{content:'→';position:absolute;left:0;font-size:.7rem;top:.06rem}
-.via-c .svc-ul li::before{color:var(--blue)}
-.stu-c .svc-ul li::before{color:#7C3AED}
-.gov-c .svc-ul li::before{color:var(--teal)}
-.svc-lnk{font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.28rem;transition:gap .14s}
-.svc-lnk:hover{gap:.5rem}
-.via-c .svc-lnk{color:var(--blue)}.stu-c .svc-lnk{color:#7C3AED}.gov-c .svc-lnk{color:var(--teal)}
-@media(max-width:900px){.svc-grid{grid-template-columns:1fr}}
-
-/* VIA SECTION */
-.via-section{background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.via-lede{max-width:62ch;margin-bottom:3.5rem}
-.via-lede .h2{margin-bottom:.9rem}
-.via-lede p{font-size:1rem;color:var(--txt-muted);line-height:1.72}
-.via-grid{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start}
-.via-left p{font-size:.95rem;color:var(--txt-muted);line-height:1.72;margin-bottom:2rem}
-.prob-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--coral);display:block;margin-bottom:.88rem}
-.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:.72rem;margin-bottom:2rem}
-.prob-card{padding:1.35rem;border-radius:12px;background:#fff;border:1.5px solid #FEE2E2}
-.prob-num{font-family:var(--fd);font-size:2.3rem;font-weight:800;color:var(--coral);line-height:1;margin-bottom:.28rem}
-.prob-desc{font-size:.8rem;color:var(--txt-muted);line-height:1.48}
-.via-solution-p{font-size:.92rem;color:var(--txt-body);line-height:1.72;border-left:3px solid var(--blue);padding-left:1rem}
-/* right side: big chat + info */
-.via-right-chat .hero-chat{box-shadow:var(--sh-lg);border-radius:16px}
-/* Modules */
+/* VIA modules */
 .via-bottom{margin-top:4rem}
 .mods-lbl{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.88rem}
 .mods-wrap{display:flex;flex-wrap:wrap;gap:.4rem}
@@ -176,13 +266,11 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .d-b{background:var(--green)}.d-s{background:var(--amber)}
 .mods-legend{display:flex;gap:1.25rem;flex-wrap:wrap;margin-top:.82rem}
 .mods-legend span{display:flex;align-items:center;gap:.36rem;font-size:.74rem;color:var(--txt-muted)}
-/* Steps */
 .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem;margin-top:1rem}
 .step{padding:1.5rem;border-radius:12px;background:#fff;border:1.5px solid var(--border)}
 .step-n{font-family:var(--fd);font-size:2.4rem;font-weight:800;color:rgba(27,79,216,.1);line-height:1;margin-bottom:.6rem}
 .step-t{font-family:var(--fd);font-size:.97rem;font-weight:700;color:var(--txt);margin-bottom:.32rem}
 .step-d{font-size:.82rem;color:var(--txt-muted);line-height:1.54}
-/* SOC2 */
 .soc2-block{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:1.6rem 1.85rem;margin-top:2.25rem}
 .soc2-row{display:flex;align-items:center;gap:.85rem;margin-bottom:1.1rem;flex-wrap:wrap}
 .soc2-badge{display:inline-flex;align-items:center;gap:.36rem;padding:.28rem .78rem;border-radius:99px;background:rgba(5,150,105,.07);border:1px solid rgba(5,150,105,.18);font-size:.68rem;font-weight:700;color:var(--green);letter-spacing:.04em}
@@ -191,7 +279,26 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .sec-f{display:flex;align-items:center;gap:.42rem;font-size:.77rem;color:var(--txt-body);font-weight:500}
 @media(max-width:960px){.via-grid{grid-template-columns:1fr}.prob-grid{grid-template-columns:1fr}.steps-row{grid-template-columns:1fr}}
 
-/* AI STUDIO */
+/* ── PHOTO STRIP (chapter break) ── */
+.photo-strip{
+  position:relative;height:clamp(300px,38vw,480px);overflow:hidden;
+}
+.photo-strip img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block}
+.photo-strip-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(5,13,35,.65) 0%,rgba(5,13,35,.28) 100%);
+  display:flex;align-items:center;
+}
+.photo-strip-text{
+  position:relative;z-index:1;padding:0 clamp(1.5rem,5vw,4rem);max-width:640px;
+}
+.pst-label{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:.85rem}
+.pst-quote{
+  font-family:var(--fd);font-size:clamp(1.6rem,3.2vw,2.6rem);font-weight:700;
+  line-height:1.2;color:#fff;letter-spacing:-.02em
+}
+
+/* ── AI STUDIO ── */
 .studio-section{background:#fff}
 .studio-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
 .studio-head{margin-bottom:2rem}
@@ -208,32 +315,19 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .ind-lbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-muted)}
 .ind-chip{padding:.24rem .68rem;border-radius:99px;font-size:.72rem;border:1px solid var(--border);background:var(--bg-soft);color:var(--txt-muted)}
 .studio-cta{margin-top:1.75rem}
-/* AI illustration */
-.ai-vis{display:flex;align-items:center;justify-content:center;position:sticky;top:calc(var(--nav-h) + 2rem)}
-.ai-card-stack{position:relative;width:300px;height:380px}
-.ai-main-card{position:absolute;top:0;left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;box-shadow:var(--sh-lg)}
-.ai-card-lbl{font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--txt-muted);margin-bottom:.85rem}
-.ai-agent-row{display:flex;align-items:center;gap:.75rem;padding:.72rem .88rem;border-radius:10px;background:var(--bg-soft);border:1px solid var(--border);margin-bottom:.55rem;transition:border-color .2s}
-.ai-agent-row:hover{border-color:rgba(27,79,216,.25)}
-.ag-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.ag-name{font-size:.78rem;font-weight:600;color:var(--txt);flex:1}
-.ag-status{font-size:.62rem;font-weight:700;padding:.12rem .45rem;border-radius:99px}
-.ag-active{background:#D1FAE5;color:var(--green)}
-.ag-run{background:#EFF6FF;color:var(--blue)}
-.ag-wait{background:#FEF9C3;color:var(--amber)}
-.ai-divider{border:none;border-top:1px solid var(--border);margin:.85rem 0}
-.ai-bottom-row{display:flex;align-items:center;justify-content:space-between}
-.ai-metric{text-align:center}
-.ai-met-val{font-family:var(--fd);font-size:1.5rem;font-weight:800;color:var(--txt);line-height:1}
-.ai-met-lbl{font-size:.62rem;color:var(--txt-muted);margin-top:.12rem}
-.ai-second-card{position:absolute;bottom:0;left:12px;right:12px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.1rem 1.2rem;box-shadow:var(--sh-md)}
-.ai-s-title{font-size:.72rem;font-weight:700;color:var(--txt);margin-bottom:.55rem;font-family:var(--fd)}
-.ai-log{display:flex;flex-direction:column;gap:.38rem}
-.ai-log-row{font-size:.67rem;color:var(--txt-muted);display:flex;align-items:center;gap:.42rem}
-.ai-log-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-@media(max-width:960px){.studio-wrap{grid-template-columns:1fr}.ai-vis{display:none}}
 
-/* AI GOVERNANCE */
+/* Studio photo */
+.studio-photo{position:sticky;top:calc(var(--nav-h) + 2rem);border-radius:20px;overflow:hidden;box-shadow:var(--sh-xl)}
+.studio-photo img{width:100%;display:block;aspect-ratio:4/5;object-fit:cover}
+.studio-photo-caption{
+  padding:1.4rem 1.6rem;background:#fff;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.spc-text{font-family:var(--fd);font-size:.82rem;font-weight:700;color:var(--txt)}
+.spc-sub{font-size:.72rem;color:var(--txt-muted);margin-top:.1rem}
+@media(max-width:960px){.studio-wrap{grid-template-columns:1fr}.studio-photo{display:none}}
+
+/* ── AI GOVERNANCE ── */
 .gov-section{background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .gov-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
 .gov-head p{color:var(--txt-muted);font-size:.97rem;line-height:1.7;margin-top:.75rem;margin-bottom:2rem}
@@ -245,9 +339,12 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .gc-desc{font-size:.79rem;color:var(--txt-muted);line-height:1.54}
 .gov-note{padding:1.25rem;border-radius:12px;background:#F0FDFA;border:1px solid rgba(13,148,136,.18);font-size:.86rem;color:var(--txt-body);line-height:1.64}
 .gov-note strong{color:var(--teal)}
-/* Gov illustration */
+
+/* Governance photo side */
 .gov-vis{position:sticky;top:calc(var(--nav-h) + 2rem)}
-.gov-scene{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.75rem;box-shadow:var(--sh-lg)}
+.gov-photo{border-radius:20px;overflow:hidden;box-shadow:var(--sh-xl);margin-bottom:1.25rem}
+.gov-photo img{width:100%;display:block;aspect-ratio:3/4;object-fit:cover;object-position:center 20%}
+.gov-scene{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.75rem}
 .gs-head{font-family:var(--fd);font-size:.78rem;font-weight:700;color:var(--txt-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem}
 .gs-framework{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.25rem}
 .gsf-row{display:flex;align-items:center;justify-content:space-between;padding:.62rem .85rem;border-radius:9px;background:var(--bg-soft);border:1px solid var(--border)}
@@ -259,15 +356,13 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .gs-divider{border:none;border-top:1px solid var(--border);margin:.85rem 0}
 .gs-risk-head{font-family:var(--fd);font-size:.72rem;font-weight:700;color:var(--txt);margin-bottom:.65rem}
 .gs-risk-bar{display:flex;height:8px;border-radius:99px;overflow:hidden;gap:2px;margin-bottom:.5rem}
-.rb-min{background:#D1FAE5;flex:3}
-.rb-lim{background:#DBEAFE;flex:5}
-.rb-hi{background:#FED7AA;flex:2}
+.rb-min{background:#D1FAE5;flex:3}.rb-lim{background:#DBEAFE;flex:5}.rb-hi{background:#FED7AA;flex:2}
 .gs-risk-legend{display:flex;gap:1rem}
 .gs-rl{font-size:.64rem;color:var(--txt-muted);display:flex;align-items:center;gap:.28rem}
 .gs-rl-dot{width:6px;height:6px;border-radius:50%}
 @media(max-width:960px){.gov-wrap{grid-template-columns:1fr}.gov-vis{display:none}}
 
-/* METRICS — dark accent strip */
+/* ── METRICS — dark ── */
 .metrics-section{background:var(--dark);padding:clamp(5rem,7vw,7.5rem) 0}
 .met-head{text-align:center;margin-bottom:3.25rem}
 .met-head .section-lbl{color:rgba(34,201,230,.65)}
@@ -280,7 +375,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .met-txt{font-size:clamp(.87rem,1.35vw,1.05rem);color:rgba(255,255,255,.6);line-height:1.52;max-width:46ch}
 @media(max-width:640px){.met-row{grid-template-columns:1fr;gap:.55rem;padding:1.65rem 1.35rem}.met-num{font-size:3rem}}
 
-/* PRICING */
+/* ── PRICING ── */
 .pricing-section{background:#fff;border-top:1px solid var(--border)}
 .pricing-head{text-align:center;margin-bottom:2.5rem}
 .pricing-head .h2{margin-bottom:.5rem}
@@ -309,7 +404,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .pricing-note{text-align:center;margin-top:1.2rem;font-size:.72rem;color:var(--txt-faint)}
 @media(max-width:900px){.pricing-grid{grid-template-columns:1fr}.plan.pop{transform:none}}
 
-/* PILOT CTA */
+/* ── PILOT CTA ── */
 .pilot-section{background:var(--bg-soft);border-top:1px solid var(--border)}
 .pilot-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
 .pilot-content .h2{margin-bottom:.82rem}
@@ -333,7 +428,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .form-success{display:none;text-align:center;padding:2.4rem;color:var(--green);font-weight:600;font-size:1rem}
 @media(max-width:900px){.pilot-wrap{grid-template-columns:1fr;gap:2.25rem}}
 
-/* FOOTER */
+/* ── FOOTER ── */
 .footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:4rem 0 2rem}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
 .ft-brand img{height:33px;width:auto}
@@ -378,7 +473,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
           <div class="lang-option" data-lang="th">🇹🇭 ภาษาไทย</div>
         </div>
       </div>
-      <a href="#pilot" class="btn btn-primary" data-i18n="nav_cta">Request Demo</a>
+      <a href="#pilot" class="nav-cta-hero" data-i18n="nav_cta">Request Demo</a>
     </div>
     <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </div>
@@ -392,71 +487,29 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
   <a href="#pilot" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:.5rem" data-i18n="nav_cta">Request Demo</a>
 </div>
 
-<!-- HERO -->
+<!-- HERO — full-bleed photo -->
 <section class="hero" id="home">
+  <div class="hero-photo">
+    <img
+      src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80"
+      alt="International students"
+      loading="eager"
+      fetchpriority="high"
+    >
+    <div class="hero-overlay"></div>
+  </div>
   <div class="container">
-    <div class="hero-inner">
-      <div class="animate-in">
-        <span class="hero-lbl" data-i18n="hero_badge">Software · AI · Consulting</span>
-        <h1 class="h1 hero-h1" data-i18n="hero_headline_1">The operating system for education agencies.</h1>
-        <p class="hero-sub" data-i18n="hero_subheadline">Replace WhatsApp, Excel, and five other tools with one platform. VIA Connect manages every student, document, payment, and visa in one place — while Blue Peaks AI and Governance keep your business future-ready.</p>
-        <div class="hero-ctas">
-          <a href="#via" class="btn btn-primary" data-i18n="hero_cta_primary">Explore VIA Connect →</a>
-          <a href="#services" class="btn btn-ghost" data-i18n="hero_cta_secondary">See all services</a>
-        </div>
-      </div>
-      <div class="animate-in" style="transition-delay:.12s">
-        <div class="hero-chat">
-          <div class="ch-topbar">
-            <div class="ch-tb-left">
-              <div class="ch-tb-ico">🏫</div>
-              <div>
-                <div class="ch-tb-title">VIA Connect</div>
-                <div class="ch-tb-sub">Student Journey · 3 participants</div>
-              </div>
-            </div>
-            <span class="live-dot">LIVE</span>
-          </div>
-          <div class="ch-msgs">
-            <div class="ch-msg">
-              <div class="av av-s">VC<span class="av-flag">🇲🇽</span></div>
-              <div class="ch-body">
-                <div class="ch-sender">Valentina Cruz <span class="ch-role">· Student</span></div>
-                <div class="ch-bub">Hi Josué, when will I get my acceptance letter? I need it for the visa application.<div class="ch-time">10:24 AM</div></div>
-              </div>
-            </div>
-            <div class="ch-msg">
-              <div class="av av-a">JH</div>
-              <div class="ch-body">
-                <div class="ch-sender">Josué Hernández <span class="ch-role">· Advisor</span></div>
-                <div class="ch-bub">Hi Valentina! Already requested it from ILAC this morning. <span class="men">@ILAC College</span> — can you confirm the status?<div class="ch-time">10:26 AM</div></div>
-              </div>
-            </div>
-            <div class="ch-msg">
-              <div class="av av-i">IL<span class="av-flag">🇨🇦</span></div>
-              <div class="ch-body">
-                <div class="ch-sender">ILAC College <span class="ch-role">· School</span></div>
-                <div class="ch-bub">Hi team! Valentina's letter is ready. Uploading it to her student portal now.<div class="ch-time">10:31 AM</div></div>
-              </div>
-            </div>
-            <div class="ch-file">
-              <div class="cf-ico">📄</div>
-              <div>
-                <div class="cf-name">ILAC_Cruz_Valentina.pdf</div>
-                <div class="cf-meta">Acceptance Letter · 284 KB · Document verified ✓</div>
-              </div>
-            </div>
-            <div class="ch-msg">
-              <div class="av av-a">JH</div>
-              <div class="ch-body">
-                <div class="ch-bub">Documents complete. Starting your visa application this week. You're on track! 🎉<div class="ch-time">10:35 AM</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="hero-content animate-in">
+      <span class="hero-eyebrow" data-i18n="hero_badge">Software · AI · Consulting</span>
+      <h1 class="hero-h1" data-i18n="hero_headline_1">The operating system for education agencies.</h1>
+      <p class="hero-sub" data-i18n="hero_subheadline">Replace WhatsApp, Excel, and five other tools with one platform. VIA Connect manages every student, document, payment, and visa — in one place.</p>
+      <div class="hero-ctas">
+        <a href="#via" class="btn-hero-p" data-i18n="hero_cta_primary">Explore VIA Connect →</a>
+        <a href="#services" class="btn-hero-g" data-i18n="hero_cta_secondary">See all services</a>
       </div>
     </div>
   </div>
+  <div class="hero-scroll">scroll</div>
 </section>
 
 <!-- TRUST BAR -->
@@ -473,40 +526,53 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
   </div>
 </div>
 
-<!-- THREE BUSINESS LINES -->
+<!-- THREE BUSINESS LINES — editorial layout -->
 <section class="svc-section section" id="services">
   <div class="container">
     <div class="svc-head animate-in">
-      <span class="section-lbl">Blue Peaks Innovations</span>
-      <h2 class="h2">Three lines of business. One founding team.</h2>
+      <span>Blue Peaks Innovations</span>
+      <h2 class="h2">Three lines of business.<br>One founding team.</h2>
       <p>Software you can use today. Intelligence built for tomorrow. Governance ready for what's coming.</p>
     </div>
-    <div class="svc-grid">
-      <div class="svc-card via-c animate-in">
-        <div class="svc-ico ic-via">📡</div>
-        <span class="tag tag-blue">⭐ Star Product</span>
-        <div class="svc-title">VIA Connect</div>
-        <p class="svc-desc">The operating system for international education agencies. Replace WhatsApp, Excel, email, and three more tools with one platform built end-to-end for this industry.</p>
-        <ul class="svc-ul">
+
+    <!-- VIA Connect — featured block with photo -->
+    <div class="svc-featured animate-in">
+      <div class="svc-feat-img">
+        <img
+          src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=80"
+          alt="Students working together"
+          loading="lazy"
+        >
+        <div class="svc-feat-img-overlay"></div>
+      </div>
+      <div class="svc-feat-body">
+        <span class="svc-feat-tag">⭐ Star Product</span>
+        <h3 class="svc-feat-title">VIA Connect</h3>
+        <p class="svc-feat-desc">The operating system for international education agencies. Replace WhatsApp, Excel, email, and three more tools with one platform built end-to-end for this industry.</p>
+        <ul class="svc-feat-list">
           <li>CRM + student pipeline</li>
           <li>Document Intelligence (AI · HITL · 11 types)</li>
           <li>Payment ledger + commissions</li>
           <li>Student, parent &amp; provider portals</li>
         </ul>
-        <a href="#via" class="svc-lnk">See the full platform →</a>
+        <div><a href="#via" class="btn btn-primary">See the full platform →</a></div>
       </div>
-      <div class="svc-card stu-c animate-in" style="transition-delay:.08s">
+    </div>
+
+    <!-- AI Studio + Governance — paired -->
+    <div class="svc-pair">
+      <div class="svc-card stu-c animate-in">
         <div class="svc-ico ic-stu">🤖</div>
-        <span class="tag" style="background:#F5F3FF;border-color:rgba(124,58,237,.18);color:#7C3AED">Custom AI Projects</span>
+        <span class="tag" style="background:#F5F3FF;border-color:rgba(124,58,237,.18);color:#7C3AED;width:fit-content">Custom AI Projects</span>
         <div class="svc-title">Blue Peaks AI Studio</div>
         <p class="svc-desc">Custom AI at any scale. A single intelligent agent or a full multi-agent ecosystem making complex operational decisions — integrated with your existing systems, without replacing anything.</p>
         <a href="#studio" class="svc-lnk">See project types →</a>
       </div>
-      <div class="svc-card gov-c animate-in" style="transition-delay:.16s">
+      <div class="svc-card gov-c animate-in" style="transition-delay:.08s">
         <div class="svc-ico ic-gov">🛡</div>
-        <span class="tag tag-amber">EU AI Act Ready</span>
+        <span class="tag tag-amber" style="width:fit-content">EU AI Act Ready</span>
         <div class="svc-title">AI Governance Advisory</div>
-        <p class="svc-desc">Global AI ethics, governance, and compliance consulting. We help companies prepare for AI audits — especially for agentic systems where agents make autonomous decisions affecting real people and operations.</p>
+        <p class="svc-desc">Global AI ethics, governance, and compliance consulting. We help companies prepare for AI audits — especially for agentic systems where agents make autonomous decisions affecting real people.</p>
         <a href="#governance" class="svc-lnk">See services →</a>
       </div>
     </div>
@@ -532,7 +598,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
         </div>
         <p class="via-solution-p">VIA Connect puts student, advisor, and school in a shared real-time workspace. No more chasing documents over WhatsApp. No more parents calling to ask "what's next?"</p>
       </div>
-      <div class="via-right-chat animate-in" style="transition-delay:.12s">
+      <div class="animate-in" style="transition-delay:.12s">
         <div class="hero-chat" style="box-shadow:var(--sh-xl)">
           <div class="ch-topbar">
             <div class="ch-tb-left">
@@ -583,7 +649,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
       </div>
     </div>
 
-    <div class="via-bottom animate-in" style="margin-top:4rem">
+    <div class="via-bottom animate-in">
       <span class="mods-lbl" data-i18n="solution_label">What's Already Built</span>
       <div class="mods-wrap">
         <span class="mod"><span class="dot d-b"></span>CRM + Pipeline</span>
@@ -648,6 +714,21 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
   </div>
 </section>
 
+<!-- PHOTO STRIP — chapter break between VIA and AI Studio -->
+<div class="photo-strip">
+  <img
+    src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1920&q=80"
+    alt="Student journey"
+    loading="lazy"
+  >
+  <div class="photo-strip-overlay">
+    <div class="photo-strip-text">
+      <span class="pst-label">Blue Peaks AI Studio</span>
+      <p class="pst-quote">"We don't replace the systems you have. We make them intelligent."</p>
+    </div>
+  </div>
+</div>
+
 <!-- AI STUDIO -->
 <section class="studio-section section" id="studio">
   <div class="container">
@@ -677,30 +758,19 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
           <a href="#pilot" class="btn btn-primary">Tell us about your project →</a>
         </div>
       </div>
-      <!-- AI Dashboard illustration -->
-      <div class="ai-vis animate-in" style="transition-delay:.1s">
-        <div class="ai-card-stack">
-          <div class="ai-main-card">
-            <div class="ai-card-lbl">Agent Ecosystem — Live</div>
-            <div class="ai-agent-row"><span class="ag-dot" style="background:var(--green)"></span><span class="ag-name">Sales Agent</span><span class="ag-status ag-active">Active</span></div>
-            <div class="ai-agent-row"><span class="ag-dot" style="background:var(--blue)"></span><span class="ag-name">Document Agent</span><span class="ag-status ag-run">Running</span></div>
-            <div class="ai-agent-row"><span class="ag-dot" style="background:var(--amber)"></span><span class="ag-name">Pricing Agent</span><span class="ag-status ag-wait">Queued</span></div>
-            <div class="ai-agent-row"><span class="ag-dot" style="background:var(--green)"></span><span class="ag-name">Logistics Agent</span><span class="ag-status ag-active">Active</span></div>
-            <hr class="ai-divider">
-            <div class="ai-bottom-row">
-              <div class="ai-metric"><div class="ai-met-val">1,247</div><div class="ai-met-lbl">tasks today</div></div>
-              <div class="ai-metric"><div class="ai-met-val">99.2%</div><div class="ai-met-lbl">accuracy</div></div>
-              <div class="ai-metric"><div class="ai-met-val">0.4s</div><div class="ai-met-lbl">avg decision</div></div>
-            </div>
+      <!-- Real photo replacing CSS illustration -->
+      <div class="studio-photo animate-in" style="transition-delay:.1s">
+        <img
+          src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80"
+          alt="AI team at work"
+          loading="lazy"
+        >
+        <div class="studio-photo-caption">
+          <div>
+            <div class="spc-text">Method A³</div>
+            <div class="spc-sub">AI-Augmented Teams — already delivering results</div>
           </div>
-          <div class="ai-second-card">
-            <div class="ai-s-title">Recent Decisions</div>
-            <div class="ai-log">
-              <div class="ai-log-row"><span class="ai-log-dot" style="background:var(--green)"></span>Order #4821 — approved automatically</div>
-              <div class="ai-log-row"><span class="ai-log-dot" style="background:var(--blue)"></span>Invoice OCR — 3 fields extracted</div>
-              <div class="ai-log-row"><span class="ai-log-dot" style="background:var(--amber)"></span>Pricing alert — rule triggered</div>
-            </div>
-          </div>
+          <span class="tag" style="background:#F5F3FF;border-color:rgba(124,58,237,.18);color:#7C3AED">Active</span>
         </div>
       </div>
     </div>
@@ -711,8 +781,15 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <section class="gov-section section" id="governance">
   <div class="container">
     <div class="gov-wrap">
-      <!-- Compliance scene — left -->
+      <!-- Photo + compliance card — left -->
       <div class="gov-vis animate-in">
+        <div class="gov-photo">
+          <img
+            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=700&q=80"
+            alt="Professional meeting"
+            loading="lazy"
+          >
+        </div>
         <div class="gov-scene">
           <div class="gs-head">Compliance Framework Status</div>
           <div class="gs-framework">
@@ -907,7 +984,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 </footer>
 
 <script>
-const T={en:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'AI Governance',nav_pricing:'Pricing',nav_contact:'Contact',nav_cta:'Request Demo',hero_badge:'Software · AI · Consulting',hero_headline_1:'The operating system for education agencies.',hero_subheadline:'Replace WhatsApp, Excel, and five other tools with one platform. VIA Connect manages every student, document, payment, and visa in one place — while Blue Peaks AI and Governance keep your business future-ready.',hero_cta_primary:'Explore VIA Connect →',hero_cta_secondary:'See all services',trust_text:'Built for agencies sending students to',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'AI Governance',section_pricing:'Pricing',problem_label:'The Problem Today',solution_label:'What\'s Already Built',metrics_label_1:'More students per advisor, without new hires. Your team scales with software, not headcount.',metrics_label_2:'Of parents with real-time visibility into their student\'s journey. They stop calling. Your team stops repeating.',metrics_label_3:'Platform that replaces 5 tools. One source of truth for documents, payments, communications, and operations.',pricing_starter:'Starter',pricing_pro:'Professional',pricing_enterprise:'Enterprise',pricing_note:'Illustrative pricing · subject to validation · billed monthly · annual discount available',pilot_headline:'Be one of the 3 pilot agencies',pilot_sub:'Assisted onboarding · Your data is always yours · Cancel anytime · Your operation defines the roadmap',pilot_btn:'Request my spot →',form_name:'Name',form_agency:'Agency',form_email:'Email',form_country:'Country',form_whatsapp:'WhatsApp',footer_tagline:'Software · AI · Consulting',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Federally incorporated in Canada · bluepeaks.io'},es:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'IA Governance',nav_pricing:'Precios',nav_contact:'Contacto',nav_cta:'Solicitar Demo',hero_badge:'Software · IA · Consultoría',hero_headline_1:'El sistema operativo para agencias de educación.',hero_subheadline:'Reemplaza WhatsApp, Excel y cinco herramientas más con una sola plataforma. VIA Connect gestiona cada estudiante, documento, pago y visa en un solo lugar.',hero_cta_primary:'Conocer VIA Connect →',hero_cta_secondary:'Ver todos los servicios',trust_text:'Construido para agencias que envían estudiantes a',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'IA Governance',section_pricing:'Precios',problem_label:'El Problema Hoy',solution_label:'Lo que ya está construido',metrics_label_1:'Más estudiantes por asesor, sin nuevas contrataciones.',metrics_label_2:'De padres con visibilidad en tiempo real del viaje de su estudiante.',metrics_label_3:'Plataforma que reemplaza 5 herramientas. Una fuente de verdad.',pricing_starter:'Starter',pricing_pro:'Profesional',pricing_enterprise:'Empresa',pricing_note:'Precios ilustrativos · sujetos a validación · facturación mensual',pilot_headline:'Sé una de las 3 agencias piloto',pilot_sub:'Onboarding asistido · Tus datos son tuyos · Cancela cuando quieras',pilot_btn:'Solicitar mi lugar →',form_name:'Nombre',form_agency:'Agencia',form_email:'Correo',form_country:'País',form_whatsapp:'WhatsApp',footer_tagline:'Software · IA · Consultoría',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Incorporada federalmente en Canadá · bluepeaks.io'},fr:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'IA Governance',nav_pricing:'Tarifs',nav_contact:'Contact',nav_cta:'Demander une démo',hero_badge:'Logiciels · IA · Conseil',hero_headline_1:'Le système d\'exploitation pour les agences d\'éducation.',hero_subheadline:'Remplacez WhatsApp, Excel et cinq autres outils par une seule plateforme. VIA Connect gère chaque étudiant, document, paiement et visa en un seul endroit.',hero_cta_primary:'Découvrir VIA Connect →',hero_cta_secondary:'Voir tous les services',trust_text:'Conçu pour les agences envoyant des étudiants vers',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'IA Governance',section_pricing:'Tarifs',problem_label:'Le Problème Aujourd\'hui',solution_label:'Déjà construit et opérationnel',metrics_label_1:'Plus d\'étudiants par conseiller, sans recrutement.',metrics_label_2:'Des parents avec une visibilité en temps réel.',metrics_label_3:'Plateforme qui remplace 5 outils. Une seule source de vérité.',pricing_starter:'Starter',pricing_pro:'Professionnel',pricing_enterprise:'Entreprise',pricing_note:'Tarifs indicatifs · soumis à validation · facturation mensuelle',pilot_headline:'Soyez l\'une des 3 agences pilotes',pilot_sub:'Onboarding assisté · Vos données vous appartiennent · Résiliez à tout moment',pilot_btn:'Demander ma place →',form_name:'Nom',form_agency:'Agence',form_email:'Email',form_country:'Pays',form_whatsapp:'WhatsApp',footer_tagline:'Logiciels · IA · Conseil',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Société fédérale canadienne · bluepeaks.io'},de:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'KI Governance',nav_pricing:'Preise',nav_contact:'Kontakt',nav_cta:'Demo anfragen',hero_badge:'Software · KI · Beratung',hero_headline_1:'Das Betriebssystem für Bildungsagenturen.',hero_subheadline:'Ersetzen Sie WhatsApp, Excel und fünf weitere Tools durch eine einzige Plattform. VIA Connect verwaltet jeden Studierenden, jedes Dokument, jede Zahlung und jedes Visum an einem Ort.',hero_cta_primary:'VIA Connect entdecken →',hero_cta_secondary:'Alle Services ansehen',trust_text:'Entwickelt für Agenturen, die Studierende nach',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'KI Governance',section_pricing:'Preise',problem_label:'Das Problem Heute',solution_label:'Bereits gebaut und in Betrieb',metrics_label_1:'Mehr Studierende pro Berater, ohne neue Einstellungen.',metrics_label_2:'Der Eltern mit Echtzeittransparenz.',metrics_label_3:'Plattform ersetzt 5 Tools. Eine Quelle der Wahrheit.',pricing_starter:'Starter',pricing_pro:'Professional',pricing_enterprise:'Enterprise',pricing_note:'Illustrative Preise · vorbehaltlich Validierung · monatliche Abrechnung',pilot_headline:'Werden Sie eine von 3 Pilotageenturen',pilot_sub:'Begleitetes Onboarding · Ihre Daten gehören Ihnen · Jederzeit kündbar',pilot_btn:'Meinen Platz anfragen →',form_name:'Name',form_agency:'Agentur',form_email:'E-Mail',form_country:'Land',form_whatsapp:'WhatsApp',footer_tagline:'Software · KI · Beratung',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Bundesweit in Kanada eingetragen · bluepeaks.io'},zh:{nav_via:'VIA Connect',nav_studio:'AI 工作室',nav_governance:'AI 治理',nav_pricing:'定价',nav_contact:'联系我们',nav_cta:'申请演示',hero_badge:'软件 · AI · 咨询',hero_headline_1:'教育机构的操作系统。',hero_subheadline:'用一个平台取代 WhatsApp、Excel 和其他五种工具。VIA Connect 在一个地方管理每位学生、每份文件、每笔付款和每个签证。',hero_cta_primary:'了解 VIA Connect →',hero_cta_secondary:'查看所有服务',trust_text:'专为向以下国家派遣留学生的机构打造',section_via:'VIA Connect',section_studio:'AI 工作室',section_governance:'AI 治理',section_pricing:'定价',problem_label:'当前痛点',solution_label:'已构建并运行中',metrics_label_1:'每位顾问服务的学生数量提升 3 倍，无需增加人手。',metrics_label_2:'家长获得实时可见性，不再频繁来电咨询。',metrics_label_3:'一个平台替代 5 种工具，文件、付款、沟通全面整合。',pricing_starter:'入门版',pricing_pro:'专业版',pricing_enterprise:'企业版',pricing_note:'价格仅供参考 · 以最终确认为准 · 按月计费',pilot_headline:'成为 3 家试点机构之一',pilot_sub:'协助入驻 · 数据归您所有 · 随时可取消',pilot_btn:'申请席位 →',form_name:'姓名',form_agency:'机构名称',form_email:'邮箱',form_country:'国家',form_whatsapp:'WhatsApp',footer_tagline:'软件 · AI · 咨询',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · 加拿大联邦注册企业 · bluepeaks.io'},ja:{nav_via:'VIA Connect',nav_studio:'AIスタジオ',nav_governance:'AIガバナンス',nav_pricing:'料金',nav_contact:'お問い合わせ',nav_cta:'デモを申し込む',hero_badge:'ソフトウェア · AI · コンサルティング',hero_headline_1:'教育エージェンシーのためのOSです。',hero_subheadline:'WhatsApp、Excel、他5つのツールを1つのプラットフォームに置き換えます。VIA Connectは、すべての学生、書類、支払い、ビザを一元管理します。',hero_cta_primary:'VIA Connectを見る →',hero_cta_secondary:'全サービスを見る',trust_text:'以下の国への留学生を送り出すエージェンシー向け',section_via:'VIA Connect',section_studio:'AIスタジオ',section_governance:'AIガバナンス',section_pricing:'料金',problem_label:'現在の課題',solution_label:'構築済み・稼働中',metrics_label_1:'アドバイザー1人あたりの学生数が3倍に。',metrics_label_2:'保護者がリアルタイムで学生の状況を確認。',metrics_label_3:'1つのプラットフォームで5つのツールを置き換え。',pricing_starter:'スターター',pricing_pro:'プロフェッショナル',pricing_enterprise:'エンタープライズ',pricing_note:'参考価格 · 月次請求 · 年間割引あり',pilot_headline:'3社のパイロット機関の1つになる',pilot_sub:'オンボーディング支援 · データはお客様のもの · いつでもキャンセル可能',pilot_btn:'席を申し込む →',form_name:'お名前',form_agency:'機関名',form_email:'メール',form_country:'国',form_whatsapp:'WhatsApp',footer_tagline:'ソフトウェア · AI · コンサルティング',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · カナダ連邦法人 · bluepeaks.io'},th:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'AI Governance',nav_pricing:'ราคา',nav_contact:'ติดต่อ',nav_cta:'ขอดูตัวอย่าง',hero_badge:'ซอฟต์แวร์ · AI · ที่ปรึกษา',hero_headline_1:'ระบบปฏิบัติการสำหรับเอเจนซีการศึกษา',hero_subheadline:'แทนที่ WhatsApp, Excel และเครื่องมืออีก 5 รายการด้วยแพลตฟอร์มเดียว VIA Connect จัดการนักเรียน เอกสาร การชำระเงิน และวีซ่าในที่เดียว',hero_cta_primary:'สำรวจ VIA Connect →',hero_cta_secondary:'ดูบริการทั้งหมด',trust_text:'สร้างสำหรับเอเจนซีที่ส่งนักเรียนไปยัง',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'AI Governance',section_pricing:'ราคา',problem_label:'ปัญหาในปัจจุบัน',solution_label:'สร้างและใช้งานแล้ว',metrics_label_1:'นักเรียนต่อที่ปรึกษาเพิ่มขึ้น 3 เท่า',metrics_label_2:'ผู้ปกครองเห็นข้อมูลแบบเรียลไทม์',metrics_label_3:'แพลตฟอร์มเดียวแทนที่ 5 เครื่องมือ',pricing_starter:'สตาร์ทเตอร์',pricing_pro:'โปรเฟสชันนัล',pricing_enterprise:'เอนเตอร์ไพรส์',pricing_note:'ราคาเพื่อการอ้างอิง · เรียกเก็บรายเดือน',pilot_headline:'เป็น 1 ใน 3 เอเจนซีนำร่อง',pilot_sub:'การเตรียมความพร้อมด้วยความช่วยเหลือ · ข้อมูลเป็นของคุณ · ยกเลิกได้ตลอดเวลา',pilot_btn:'ขอจองที่นั่ง →',form_name:'ชื่อ',form_agency:'ชื่อเอเจนซี',form_email:'อีเมล',form_country:'ประเทศ',form_whatsapp:'WhatsApp',footer_tagline:'ซอฟต์แวร์ · AI · ที่ปรึกษา',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · จดทะเบียนในแคนาดา · bluepeaks.io'}};
+const T={en:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'AI Governance',nav_pricing:'Pricing',nav_contact:'Contact',nav_cta:'Request Demo',hero_badge:'Software · AI · Consulting',hero_headline_1:'The operating system for education agencies.',hero_subheadline:'Replace WhatsApp, Excel, and five other tools with one platform. VIA Connect manages every student, document, payment, and visa — in one place.',hero_cta_primary:'Explore VIA Connect →',hero_cta_secondary:'See all services',trust_text:'Built for agencies sending students to',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'AI Governance',section_pricing:'Pricing',problem_label:'The Problem Today',solution_label:'What\'s Already Built',metrics_label_1:'More students per advisor, without new hires. Your team scales with software, not headcount.',metrics_label_2:'Of parents with real-time visibility into their student\'s journey. They stop calling. Your team stops repeating.',metrics_label_3:'Platform that replaces 5 tools. One source of truth for documents, payments, communications, and operations.',pricing_starter:'Starter',pricing_pro:'Professional',pricing_enterprise:'Enterprise',pricing_note:'Illustrative pricing · subject to validation · billed monthly · annual discount available',pilot_headline:'Be one of the 3 pilot agencies',pilot_sub:'Assisted onboarding · Your data is always yours · Cancel anytime · Your operation defines the roadmap',pilot_btn:'Request my spot →',form_name:'Name',form_agency:'Agency',form_email:'Email',form_country:'Country',form_whatsapp:'WhatsApp',footer_tagline:'Software · AI · Consulting',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Federally incorporated in Canada · bluepeaks.io'},es:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'IA Governance',nav_pricing:'Precios',nav_contact:'Contacto',nav_cta:'Solicitar Demo',hero_badge:'Software · IA · Consultoría',hero_headline_1:'El sistema operativo para agencias de educación.',hero_subheadline:'Reemplaza WhatsApp, Excel y cinco herramientas más con una sola plataforma. VIA Connect gestiona cada estudiante, documento, pago y visa en un solo lugar.',hero_cta_primary:'Conocer VIA Connect →',hero_cta_secondary:'Ver todos los servicios',trust_text:'Construido para agencias que envían estudiantes a',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'IA Governance',section_pricing:'Precios',problem_label:'El Problema Hoy',solution_label:'Lo que ya está construido',metrics_label_1:'Más estudiantes por asesor, sin nuevas contrataciones.',metrics_label_2:'De padres con visibilidad en tiempo real del viaje de su estudiante.',metrics_label_3:'Plataforma que reemplaza 5 herramientas. Una fuente de verdad.',pricing_starter:'Starter',pricing_pro:'Profesional',pricing_enterprise:'Empresa',pricing_note:'Precios ilustrativos · sujetos a validación · facturación mensual',pilot_headline:'Sé una de las 3 agencias piloto',pilot_sub:'Onboarding asistido · Tus datos son tuyos · Cancela cuando quieras',pilot_btn:'Solicitar mi lugar →',form_name:'Nombre',form_agency:'Agencia',form_email:'Correo',form_country:'País',form_whatsapp:'WhatsApp',footer_tagline:'Software · IA · Consultoría',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Incorporada federalmente en Canadá · bluepeaks.io'},fr:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'IA Governance',nav_pricing:'Tarifs',nav_contact:'Contact',nav_cta:'Demander une démo',hero_badge:'Logiciels · IA · Conseil',hero_headline_1:'Le système d\'exploitation pour les agences d\'éducation.',hero_subheadline:'Remplacez WhatsApp, Excel et cinq autres outils par une seule plateforme. VIA Connect gère chaque étudiant, document, paiement et visa en un seul endroit.',hero_cta_primary:'Découvrir VIA Connect →',hero_cta_secondary:'Voir tous les services',trust_text:'Conçu pour les agences envoyant des étudiants vers',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'IA Governance',section_pricing:'Tarifs',problem_label:'Le Problème Aujourd\'hui',solution_label:'Déjà construit et opérationnel',metrics_label_1:'Plus d\'étudiants par conseiller, sans recrutement.',metrics_label_2:'Des parents avec une visibilité en temps réel.',metrics_label_3:'Plateforme qui remplace 5 outils. Une seule source de vérité.',pricing_starter:'Starter',pricing_pro:'Professionnel',pricing_enterprise:'Entreprise',pricing_note:'Tarifs indicatifs · soumis à validation · facturation mensuelle',pilot_headline:'Soyez l\'une des 3 agences pilotes',pilot_sub:'Onboarding assisté · Vos données vous appartiennent · Résiliez à tout moment',pilot_btn:'Demander ma place →',form_name:'Nom',form_agency:'Agence',form_email:'Email',form_country:'Pays',form_whatsapp:'WhatsApp',footer_tagline:'Logiciels · IA · Conseil',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Société fédérale canadienne · bluepeaks.io'},de:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'KI Governance',nav_pricing:'Preise',nav_contact:'Kontakt',nav_cta:'Demo anfragen',hero_badge:'Software · KI · Beratung',hero_headline_1:'Das Betriebssystem für Bildungsagenturen.',hero_subheadline:'Ersetzen Sie WhatsApp, Excel und fünf weitere Tools durch eine einzige Plattform. VIA Connect verwaltet jeden Studierenden, jedes Dokument, jede Zahlung und jedes Visum an einem Ort.',hero_cta_primary:'VIA Connect entdecken →',hero_cta_secondary:'Alle Services ansehen',trust_text:'Entwickelt für Agenturen, die Studierende nach',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'KI Governance',section_pricing:'Preise',problem_label:'Das Problem Heute',solution_label:'Bereits gebaut und in Betrieb',metrics_label_1:'Mehr Studierende pro Berater, ohne neue Einstellungen.',metrics_label_2:'Der Eltern mit Echtzeittransparenz.',metrics_label_3:'Plattform ersetzt 5 Tools. Eine Quelle der Wahrheit.',pricing_starter:'Starter',pricing_pro:'Professional',pricing_enterprise:'Enterprise',pricing_note:'Illustrative Preise · vorbehaltlich Validierung · monatliche Abrechnung',pilot_headline:'Werden Sie eine von 3 Pilotageenturen',pilot_sub:'Begleitetes Onboarding · Ihre Daten gehören Ihnen · Jederzeit kündbar',pilot_btn:'Meinen Platz anfragen →',form_name:'Name',form_agency:'Agentur',form_email:'E-Mail',form_country:'Land',form_whatsapp:'WhatsApp',footer_tagline:'Software · KI · Beratung',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · Bundesweit in Kanada eingetragen · bluepeaks.io'},zh:{nav_via:'VIA Connect',nav_studio:'AI 工作室',nav_governance:'AI 治理',nav_pricing:'定价',nav_contact:'联系我们',nav_cta:'申请演示',hero_badge:'软件 · AI · 咨询',hero_headline_1:'教育机构的操作系统。',hero_subheadline:'用一个平台取代 WhatsApp、Excel 和其他五种工具。VIA Connect 在一个地方管理每位学生、每份文件、每笔付款和每个签证。',hero_cta_primary:'了解 VIA Connect →',hero_cta_secondary:'查看所有服务',trust_text:'专为向以下国家派遣留学生的机构打造',section_via:'VIA Connect',section_studio:'AI 工作室',section_governance:'AI 治理',section_pricing:'定价',problem_label:'当前痛点',solution_label:'已构建并运行中',metrics_label_1:'每位顾问服务的学生数量提升 3 倍，无需增加人手。',metrics_label_2:'家长获得实时可见性，不再频繁来电咨询。',metrics_label_3:'一个平台替代 5 种工具，文件、付款、沟通全面整合。',pricing_starter:'入门版',pricing_pro:'专业版',pricing_enterprise:'企业版',pricing_note:'价格仅供参考 · 以最终确认为准 · 按月计费',pilot_headline:'成为 3 家试点机构之一',pilot_sub:'协助入驻 · 数据归您所有 · 随时可取消',pilot_btn:'申请席位 →',form_name:'姓名',form_agency:'机构名称',form_email:'邮箱',form_country:'国家',form_whatsapp:'WhatsApp',footer_tagline:'软件 · AI · 咨询',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · 加拿大联邦注册企业 · bluepeaks.io'},ja:{nav_via:'VIA Connect',nav_studio:'AIスタジオ',nav_governance:'AIガバナンス',nav_pricing:'料金',nav_contact:'お問い合わせ',nav_cta:'デモを申し込む',hero_badge:'ソフトウェア · AI · コンサルティング',hero_headline_1:'教育エージェンシーのためのOSです。',hero_subheadline:'WhatsApp、Excel、他5つのツールを1つのプラットフォームに置き換えます。VIA Connectは、すべての学生、書類、支払い、ビザを一元管理します。',hero_cta_primary:'VIA Connectを見る →',hero_cta_secondary:'全サービスを見る',trust_text:'以下の国への留学生を送り出すエージェンシー向け',section_via:'VIA Connect',section_studio:'AIスタジオ',section_governance:'AIガバナンス',section_pricing:'料金',problem_label:'現在の課題',solution_label:'構築済み・稼働中',metrics_label_1:'アドバイザー1人あたりの学生数が3倍に。',metrics_label_2:'保護者がリアルタイムで学生の状況を確認。',metrics_label_3:'1つのプラットフォームで5つのツールを置き換え。',pricing_starter:'スターター',pricing_pro:'プロフェッショナル',pricing_enterprise:'エンタープライズ',pricing_note:'参考価格 · 月次請求 · 年間割引あり',pilot_headline:'3社のパイロット機関の1つになる',pilot_sub:'オンボーディング支援 · データはお客様のもの · いつでもキャンセル可能',pilot_btn:'席を申し込む →',form_name:'お名前',form_agency:'機関名',form_email:'メール',form_country:'国',form_whatsapp:'WhatsApp',footer_tagline:'ソフトウェア · AI · コンサルティング',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · カナダ連邦法人 · bluepeaks.io'},th:{nav_via:'VIA Connect',nav_studio:'AI Studio',nav_governance:'AI Governance',nav_pricing:'ราคา',nav_contact:'ติดต่อ',nav_cta:'ขอดูตัวอย่าง',hero_badge:'ซอฟต์แวร์ · AI · ที่ปรึกษา',hero_headline_1:'ระบบปฏิบัติการสำหรับเอเจนซีการศึกษา',hero_subheadline:'แทนที่ WhatsApp, Excel และเครื่องมืออีก 5 รายการด้วยแพลตฟอร์มเดียว VIA Connect จัดการนักเรียน เอกสาร การชำระเงิน และวีซ่าในที่เดียว',hero_cta_primary:'สำรวจ VIA Connect →',hero_cta_secondary:'ดูบริการทั้งหมด',trust_text:'สร้างสำหรับเอเจนซีที่ส่งนักเรียนไปยัง',section_via:'VIA Connect',section_studio:'AI Studio',section_governance:'AI Governance',section_pricing:'ราคา',problem_label:'ปัญหาในปัจจุบัน',solution_label:'สร้างและใช้งานแล้ว',metrics_label_1:'นักเรียนต่อที่ปรึกษาเพิ่มขึ้น 3 เท่า',metrics_label_2:'ผู้ปกครองเห็นข้อมูลแบบเรียลไทม์',metrics_label_3:'แพลตฟอร์มเดียวแทนที่ 5 เครื่องมือ',pricing_starter:'สตาร์ทเตอร์',pricing_pro:'โปรเฟสชันนัล',pricing_enterprise:'เอนเตอร์ไพรส์',pricing_note:'ราคาเพื่อการอ้างอิง · เรียกเก็บรายเดือน',pilot_headline:'เป็น 1 ใน 3 เอเจนซีนำร่อง',pilot_sub:'การเตรียมความพร้อมด้วยความช่วยเหลือ · ข้อมูลเป็นของคุณ · ยกเลิกได้ตลอดเวลา',pilot_btn:'ขอจองที่นั่ง →',form_name:'ชื่อ',form_agency:'ชื่อเอเจนซี',form_email:'อีเมล',form_country:'ประเทศ',form_whatsapp:'WhatsApp',footer_tagline:'ซอฟต์แวร์ · AI · ที่ปรึกษา',footer_copyright:'© 2026 Blue Peaks Innovations Inc. · จดทะเบียนในแคนาดา · bluepeaks.io'}};
 const PRICES={starter:{usd:299,cad:404,eur:275,mxn:5490,jpy:46300,thb:10900,cny:2170},pro:{usd:699,cad:944,eur:643,mxn:12850,jpy:108300,thb:25500,cny:5070}};
 const SYM={usd:'$',cad:'C$',eur:'€',mxn:'$',jpy:'¥',thb:'฿',cny:'¥'};
 const LCUR={en:'usd',es:'mxn',fr:'eur',de:'eur',zh:'cny',ja:'jpy',th:'thb'};
@@ -939,9 +1016,21 @@ lb.addEventListener('click',e=>{e.stopPropagation();ld.classList.toggle('open')}
 document.addEventListener('click',()=>ld.classList.remove('open'));
 document.querySelectorAll('.lang-option').forEach(o=>o.addEventListener('click',()=>{applyLang(o.dataset.lang);ld.classList.remove('open')}));
 
+/* Nav scroll behavior */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+},{ passive:true });
+
+/* Hamburger */
+document.getElementById('hamburger').addEventListener('click',()=>{
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+
+/* Scroll animations */
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.07,rootMargin:'0px 0px -32px 0px'});
 document.querySelectorAll('.animate-in').forEach(el=>obs.observe(el));
 
+/* Count-up */
 function countUp(el){const t=parseInt(el.dataset.count),s=el.dataset.suffix||'',d=1400,st=performance.now(),e=p=>1-Math.pow(1-p,4);(function f(n){const p=Math.min((n-st)/d,1);el.textContent=Math.round(e(p)*t)+s;if(p<1)requestAnimationFrame(f)})(st)}
 const cobs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.counted){e.target.dataset.counted='1';countUp(e.target)}}),{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
